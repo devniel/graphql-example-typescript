@@ -1,4 +1,11 @@
-import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql';
+import {
+  Arg,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from 'type-graphql';
 import { projects, tasks, TaskData } from '../data';
 import Task from '../schemas/Task';
 
@@ -9,15 +16,15 @@ export default class {
     return tasks;
   }
 
-  @Query(returns => Task, { nullable: true })
-  getTask(@Arg('id') id: number): TaskData | undefined {
+  @Query(returns => Task, { nullable: true })
+  getTask(@Arg('id') id: number): TaskData | undefined {
     return tasks.find(task => task.id === id);
   }
 
   @Mutation(returns => Task)
   markAsCompleted(@Arg('taskId') taskId: number): TaskData {
     const task = tasks.find(task => {
-      return task.id === taskId
+      return task.id === taskId;
     });
     if (!task) {
       throw new Error(`Couldn't find the task with id ${taskId}`);
@@ -30,10 +37,9 @@ export default class {
   }
 
   @FieldResolver()
-  project(@Root() taskData: TaskData){
+  project(@Root() taskData: TaskData) {
     return projects.find(project => {
       return project.id === taskData.project_id;
     });
   }
-
 }

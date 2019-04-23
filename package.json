@@ -4,25 +4,38 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts"
+    "start": "ts-node-dev --respawn src/index.ts",
+    "prettier:base": "prettier --parser typescript",
+    "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
+    "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "^2.4.8",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
+    "class-validator": "^0.9.1",
     "express": "^4.16.4",
     "graphql": "^14.2.1",
     "graphql-tools": "^4.0.4",
     "lodash": "^4.17.11",
+    "pg": "^7.10.0",
     "reflect-metadata": "^0.1.13",
-    "type-graphql": "^0.17.1"
+    "type-graphql": "^0.17.1",
+    "typeorm": "^0.2.16"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/graphql": "^14.2.0",
     "@types/node": "^11.13.6",
+    "prettier": "1.17.0",
     "ts-node": "^8.1.0",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.4.4",
-    "@types/graphql": "^14.2.0"
+    "typescript-tslint-plugin": "^0.3.1"
   }
 }

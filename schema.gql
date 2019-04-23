@@ -5,6 +5,7 @@
 
 type Mutation {
   markAsCompleted(taskId: Float!): Task!
+  register(data: RegisterInput!): User!
 }
 
 type Project {
@@ -17,6 +18,14 @@ type Query {
   projectByName(name: String!): Project
   fetchTasks: [Task!]!
   getTask(id: Float!): Task
+  hello: String!
+}
+
+input RegisterInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
 }
 
 type Task {
@@ -24,4 +33,12 @@ type Task {
   title: String!
   project: Project!
   completed: Boolean!
+}
+
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  name: String!
 }
