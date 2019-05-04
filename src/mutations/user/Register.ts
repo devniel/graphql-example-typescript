@@ -5,21 +5,29 @@ import {
   Arg,
   FieldResolver,
   Root,
+  Authorized,
+  UseMiddleware,
 } from 'type-graphql';
 
 import bcrypt from 'bcrypt';
 
-import { User } from '../../entity/User';
+import { User } from '../../entities/User';
 import { RegisterInput } from './register/RegisterInput';
+import { isAuth } from '../../middlewares/isAuth';
+import { logger } from '../../middlewares/logger';
 
 @Resolver()
 export class RegisterResolver {
+
+  @UseMiddleware(isAuth, logger)
   @Query(() => String)
   async hello() {
     return 'Hello World!';
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, {
+    description: 'Register a new user'
+  })
   async register(@Arg('data')
   {
     email,
