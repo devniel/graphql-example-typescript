@@ -77,6 +77,7 @@ async function start() {
   const server = new ApolloServer({
     schema,
     playground: true,
+    introspection: Boolean(process.env.GRAPHQL_APOLLO_INTROSPECTION) as boolean,
     context: ({ req }: any) => ({ req })
   });
 
