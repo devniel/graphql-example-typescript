@@ -4,15 +4,18 @@
 # -----------------------------------------------
 
 type Mutation {
+  """Log in an user"""
   login(password: String!, email: String!): User
+
+  """Register a new user"""
   register(data: RegisterInput!): User!
 }
 
 type Query {
-  """Returns the list of users"""
+  """Returns the list of users."""
   users: [User!]!
 
-  """Return the current logged user."""
+  """Returns the current logged user."""
   me: User
   hello: String!
 }

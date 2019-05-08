@@ -1,24 +1,23 @@
-import 'reflect-metadata';
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
-import { buildSchema } from 'type-graphql';
-import ProjectResolver from './mutations/ProjectResolver';
-import TaskResolver from './mutations/TaskResolver';
-
-import { createConnection } from 'typeorm';
-import session from 'express-session';
-import connectRedis from 'connect-redis';
-import cors from "cors";
-import { config } from "dotenv"
-import { redis } from "./redis";
-
-import { UsersResolver, MeResolver } from './queries/user'
-import { LoginResolver, RegisterResolver } from './mutations/user';
+import { config } from "dotenv";
 
 // Configuring Dotenv
 config();
 
+import 'reflect-metadata';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+import { buildSchema } from 'type-graphql';
+import { createConnection } from 'typeorm';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
+import cors from "cors";
+
+import { redis } from "./redis";
+import { UsersResolver, MeResolver } from './queries/user'
+import { LoginResolver, RegisterResolver } from './mutations/user';
+
 async function start() {
+
   await createConnection();
 
   const PORT = process.env.PORT;
@@ -54,7 +53,7 @@ async function start() {
   app.use(
     cors({
       credentials: true,
-      origin: "http://localhost:3000"
+      origin: process.env.CORS_ORIGIN || "http://localhost:3000"
     })
   );
 
@@ -88,6 +87,7 @@ async function start() {
       `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
     )
   );
+  
 }
 
 start();
