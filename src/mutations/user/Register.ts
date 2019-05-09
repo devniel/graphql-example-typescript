@@ -24,7 +24,7 @@ export class RegisterResolver {
   @UseMiddleware(isAuth, logger)
   @Query(() => String)
   async hello(@Ctx() ctx: MyContext) {
-    return `Hello ${ctx.req.session!.user.name}!`;
+    return `Hello ${ctx.req.session!.user.name}, welcome to youl!`;
   }
 
   @Mutation(() => User, {
