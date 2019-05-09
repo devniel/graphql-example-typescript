@@ -1,0 +1,14 @@
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on: master
+before_install:
+- openssl aes-256-cbc -K $encrypted_bfd2d857407e_key -iv $encrypted_bfd2d857407e_iv
+  -in travis.key.enc -out travis.key -d
+- chmod +x ./deploy.sh
+- eval "$(ssh-agent -s)"
+- chmod 600 .travis/travis.key
+- ssh-add .travis/travis.key
+- ssh-keyscan 142.93.0.148 >> ~/.ssh/known_hosts
+- git remote add dokku dokku@142.93.0.148:youl
+- git config --global push.default simple
