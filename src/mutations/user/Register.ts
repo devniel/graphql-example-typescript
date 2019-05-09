@@ -7,6 +7,7 @@ import {
   Root,
   Authorized,
   UseMiddleware,
+  Ctx
 } from 'type-graphql';
 
 import bcrypt from 'bcrypt';
@@ -15,14 +16,15 @@ import { User } from '../../entities/User';
 import { RegisterInput } from './register/RegisterInput';
 import { isAuth } from '../../middlewares/isAuth';
 import { logger } from '../../middlewares/logger';
+import { MyContext } from '../../types/MyContext';
 
 @Resolver()
 export class RegisterResolver {
 
   @UseMiddleware(isAuth, logger)
   @Query(() => String)
-  async hello() {
-    return 'Hello World!';
+  async hello(@Ctx() ctx: MyContext) {
+    return `Hello ${ctx.req.session!.user.name}!`;
   }
 
   @Mutation(() => User, {

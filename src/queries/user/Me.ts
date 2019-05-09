@@ -10,11 +10,11 @@ export class MeResolver {
     description: 'Returns the current logged user.'
   })
   async me(@Ctx() ctx: MyContext) : Promise<User | undefined> {
-    if(!ctx.req.session!.userId) {
+    if(!ctx.req.session!.user.id) {
       return undefined;
     }
 
-    return User.findOne(ctx.req.session!.userId);
+    return User.findOne(ctx.req.session!.user.id);
   }
 
 }

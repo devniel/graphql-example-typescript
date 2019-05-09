@@ -24,7 +24,7 @@ export class User extends BaseEntity {
   password: string;
 
   @Field()
-  name(@Root() parent: User): string {
-    return `${parent.firstName} ${parent.lastName}`;
+  get name(): string {
+    return `${this.firstName} ${this.lastName}`;
   }
 }

@@ -28,7 +28,11 @@ export class LoginResolver {
       return null;
     }
 
-    ctx.req.session!.userId = user.id;
+    ctx.req.session!.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email
+    };
 
     return user;
     
