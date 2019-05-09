@@ -5,6 +5,10 @@ config();
 
 import 'reflect-metadata';
 import express from 'express';
+import * as fs from 'fs';
+import * as https from 'https';
+import * as http from 'http';
+import * as path from 'path';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
@@ -23,6 +27,11 @@ async function start() {
   const PORT = process.env.PORT;
 
   const app = express();
+
+  // Set trust proxy because in a pass we are behind a proxy
+  // And it's useful for express-session when cookie.secure is true.
+  app.set('trust proxy', 1);
+
 
   const schema = await buildSchema({
     resolvers: [
@@ -67,8 +76,9 @@ async function start() {
       resave: false,
       saveUninitialized: false,
       cookie: {
+        domain: process.env.DOMAIN,
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
       },
     })
@@ -83,11 +93,32 @@ async function start() {
 
   server.applyMiddleware({ app });
 
-  app.listen({ port: PORT }, () =>
+  const HTTP_SERVER:http.Server =  http.createServer(app);;
+  let HTTPS_SERVER:https.Server;
+
+  if(process.env.TLS === "true"){
+    
+    const httpsOptions = {
+        key: (new Buffer(process.env.TLS_KEY as string, 'base64')).toString('utf8'),
+        cert: (new Buffer(process.env.TLS_CERT as string, 'base64')).toString('utf8'),
+        rejectUnauthorized: false
+    };
+
+    HTTPS_SERVER = https.createServer(httpsOptions, app);
+  }
+  
+  HTTP_SERVER.listen(process.env.PORT, () => {
     console.log(
-      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
-    )
-  );
+      `🚀 Server ready at http://${process.env.DOMAIN}:${PORT}${server.graphqlPath}`
+    );
+    if(HTTPS_SERVER !== null){
+      HTTPS_SERVER.listen(process.env.TLS_PORT, () => {
+        console.log(
+          `🚀 Server ready at https://${process.env.DOMAIN}:${process.env.TLS_PORT}${server.graphqlPath}`
+        )
+      });
+    }
+  });
   
 }
 
