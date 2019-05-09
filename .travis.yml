@@ -1,4 +1,6 @@
 language: node_js
+node_js:
+- 11.1.0
 deploy:
   provider: script
   script: bash ./deploy.sh
@@ -13,3 +15,7 @@ before_install:
 - ssh-keyscan 142.93.0.148 >> ~/.ssh/known_hosts
 - git remote add dokku dokku@142.93.0.148:youl
 - git config --global push.default simple
+script:
+ - yarn
+ - yarn build
+cache: yarn
