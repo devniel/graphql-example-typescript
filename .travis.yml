@@ -16,6 +16,16 @@ before_install:
 - git remote add dokku dokku@142.93.0.148:youl
 - git config --global push.default simple
 script:
- - yarn
- - yarn build
+- yarn
+- yarn build
 cache: yarn
+notifications:
+  email: false
+  webhooks:
+    urls:
+      secure: CwCzMoTOljMiX6GK1+Hd3qtWIZdZkd0DQ+pr7qzgD12dMd7wCGnK5ymWeKvXF5vnfCbIPFjbro7cWROTSNXr7ub+Ecz2Qx/hIQkUvszWbu3NbHQGxBjcHzbplGdJXwdp43N7KIgg7QvnH1LvcFfvbsE+pJlXfXrxIVw2UMgUusPHQaL5pnMHyZi7Ep3HJkNcxNigK8GZuWr9U+G1Vv8B6tFsJVVD/HF3buzKaX9/ISKGDsPirA2jxhg+VdTu2b1vq4VmbHgdXtkOhY/793QClTZVtQe7ItH4OWrD2Md57HP8fHKbIGbrkaukQxKADaRnpWk0S32Qf3RIXeZ0mpu+kqB/IcEAUJxiB1iVQIu+u4NHFgcObBW6YElseSphoZxP9ZFSff+J23yD1fCF9LqsajBr01/pqRYIW2p8H+6CXCMbJodqHYeFhdeotFL1aXB0apRZ7ZO+lFmfdv+iG077rl33HMCmfHHffzNoM4x6SHjAcOMtghBU4ta9bAatFwIz6V2Ls6m5UqZI2v8pRk0NsklFQPwxxa+fLo8A829s/e0Yr7Vcf/ysYKu+XA5krBPBKfaTTVApUO2A4h8h2Ej5KvFnyr5OGYyzumncSqlzfHi7SRueX+VfYAL19FlXxPE5ar1enYzQm8B5RgrMaVRaKIj5dfOjy+RJ0sfXJApalqo=
+    on_success: always
+    on_failure: always
+    on_start: always
+    on_cancel: always
+    on_error: always
